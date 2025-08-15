@@ -1,7 +1,6 @@
 import CodeBlock from "@/components/CodeBlock";
 import StepCard from "@/components/StepCard";
 import Callout from "@/components/Callout";
-import Link from "next/link";
 
 export default function SetupPage() {
   return (
@@ -61,8 +60,8 @@ export default function SetupPage() {
       <StepCard number={4} title="Close the Setup UI — server keeps running">
         <p>
           Once your configs are saved, you can close the Setup UI. The connector
-          server will keep running in your terminal. Don't worry, this setup UI
-          will be shown again when you run the npx command again.
+          server will keep running in your terminal. Don&apos;t worry, this
+          setup UI will be shown again when you run the npx command again.
         </p>
       </StepCard>
 
@@ -81,9 +80,9 @@ export default function SetupPage() {
 
       <StepCard number={6} title="Configure your MCP client (in your AI IDE)">
         <p>
-          Now add the server to your AI editor of your choice. I've used Cursor
-          for this example. If the format of your IDE is different, you can
-          refer to their docs for the exact format.
+          Now add the server to your AI editor of your choice. I&apos;ve used
+          Cursor for this example. If the format of your IDE is different, you
+          can refer to their docs for the exact format.
         </p>
         <CodeBlock
           language="json"
