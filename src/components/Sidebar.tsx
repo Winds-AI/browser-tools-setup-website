@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import SocialLinks from "./SocialLinks";
 
 const primary = [
   { title: "Setup", href: "/setup" },
@@ -82,6 +83,7 @@ export default function Sidebar() {
             </div>
           )}
         </nav>
+        <SocialLinks />
       </div>
     </aside>
   );
