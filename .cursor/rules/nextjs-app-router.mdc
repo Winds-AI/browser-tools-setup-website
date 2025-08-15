@@ -1,0 +1,21 @@
+---
+globs: src/app/**/*.ts,src/app/**/*.tsx
+---
+
+# Next.js App Router Rules
+
+- Dynamic route params are async in Next 15+ during static generation. Always `await params` before reading properties.
+  - Example (route):
+    ```ts
+    export default async function Page({
+      params,
+    }: {
+      params: Promise<{ slug: string }>;
+    }) {
+      const { slug } = await params;
+      // ...
+    }
+    ```
+- Use `generateStaticParams` for SSG when reading filesystem-backed content (like docs).
+- If a route must be strictly static, export `export const dynamic = "error"` to disallow dynamic rendering.
+- Prefer server-only parsing/rendering for markdown to keep bundles lean. Only mark client components with `"use client"` when necessary.

@@ -1,0 +1,10 @@
+---
+description: Windows + OneDrive environment considerations for Next.js builds
+---
+
+# Windows + OneDrive Notes
+
+- Building/starting Next.js within a OneDrive-synced folder may fail with EPERM on files like `.next/trace` or `dist/trace`, or missing `routes-manifest.json` at runtime.
+- Preferred: move the project out of OneDrive (e.g., `C:\Projects\setup-tutorial`).
+- Alternative: pause OneDrive sync while building/starting the app.
+- Do not rely on `distDir` changes to fix OneDrive lock—locks also affect the new folder.

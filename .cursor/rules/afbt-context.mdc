@@ -1,0 +1,16 @@
+---
+description: Context and cross-repo references to AFBT (Autonomous Frontend Browser Tools)
+---
+
+# External Context: Autonomous Frontend Browser Tools (AFBT)
+
+- This site documents and onboards users to AFBT, hosted in a separate repository.
+- AFBT provides: Setup UI, Browser Connector, Chrome extension, MCP server. It exposes tools like `searchApiDocs`, `fetchLiveApiResponse`, `captureBrowserScreenshot`, `inspectBrowserConsole`, `inspectBrowserNetworkActivity`, `inspectSelectedElementCss`, `listApiTags`, `navigateBrowserTab`.
+- Repository: https://github.com/Winds-AI/Frontend-development-MCP-tools-public
+- NPM package: `@winds-ai/autonomous-frontend-browser-tools`
+- Quickstart command (from AFBT README): `npx @winds-ai/autonomous-frontend-browser-tools`
+
+When adding or updating docs on this site:
+
+- Ensure tool slugs and filenames match AFBT tool names exactly (case-sensitive) to align with `content/each-tool-explained/*.md` and `/tools/[slug]` route.
+- Use the AFBT README, docs, and each tool's behavior as the source of truth. The site should not invent APIs; it should mirror AFBT behavior and options.

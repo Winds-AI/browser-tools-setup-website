@@ -1,0 +1,14 @@
+---
+description: UI/UX and performance guidance for the documentation site
+---
+
+# UI and Performance Guidance
+
+- Prefer server-rendered Markdown with a light renderer; avoid shipping large client markdown libs.
+- Add a tools index page with search/filter and consistent cards linking to `/tools/[slug]`.
+- Generate a table of contents for tool pages from headings and render as a sidebar.
+- Use `next/link` for internal navigation to leverage prefetching.
+- Use `next/font` with subsetted fonts and preload primary weights.
+- Use `next/image` for any raster images; define sizes and lazy-load below the fold.
+- Keep client components minimal; only add `"use client"` when interactivity is required.
+- Memoize expensive build-time computations with `cache()` or precompute at build for consistency.

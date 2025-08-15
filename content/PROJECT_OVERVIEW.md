@@ -1,0 +1,208 @@
+﻿# Browser Tools MCP Extension - Complete Project Overview
+
+**ðŸš€ Version 1.2.0 - Autonomous AI-Powered Frontend Development Platform**
+
+- Contents:
+  - Executive Summary
+  - System Architecture
+  - Server Features
+  - Health Monitoring API
+
+## ðŸ“‹ Executive Summary
+
+The Browser Tools MCP Extension is a comprehensive solution designed for **autonomous AI-powered frontend development workflows**. This system provides AI agents with reliable access to browser state, real-time debugging information, and seamless screenshot capabilities through enhanced WebSocket connections optimized for extended development sessions.
+
+### ðŸŽ¯ Project Mission
+
+Enable AI development tools to work autonomously for hours without manual intervention by providing:
+
+- **Stable browser integration** with intelligent connection recovery
+- **Real-time context capture** (logs, network requests, screenshots)
+- **Organized data storage** for persistent AI workflow continuity
+- **Enhanced error handling** for autonomous operation reliability
+
+---
+
+## ðŸ—ï¸ System Architecture
+
+### Three-Component Architecture
+
+```mermaid
+
+flowchart TB
+ subgraph subGraph0["AI Development Environment"]
+        AI["AI Editor<br>Windsurf/Cursor/etc"]
+        MCP["MCP Server<br>browser-tools-mcp"]
+  end
+ subgraph subGraph1["Browser Tools Server"]
+        BTS["Browser Tools Server<br>browser-tools-server"]
+        WS["WebSocket Manager<br>Connection Handling"]
+        SS["Screenshot Service<br>Project-Based Storage"]
+        NS["Network Service<br>Cache & Filtering"]
+        LG["Log Manager<br>Size-Limited Storage"]
+  end
+ subgraph subGraph2["Chrome Browser"]
+        CE["Chrome Extension"]
+        BG["Background Service<br>Tab+Auth+Screenshot"]
+        DT["DevTools Panel<br>Network+Console+Elements"]
+        BW["Browser Window"]
+  end
+ subgraph subGraph3["Connection Management"]
+        HM["Health Monitoring<br>Unique Conn IDs"]
+        WB["WebSocket<br>25s Heartbeat<br>60s Timeout"]
+        PS["Port Discovery<br>3025-3035<br>5 Retries"]
+        ER["Error Recovery<br>3-15s Backoff<br>Max 10 Retries"]
+  end
+    AI <-- MCP Protocol --> MCP
+    MCP <-- Port Discovery --> BTS
+    BTS <-- WS + Heartbeat --> CE
+    BTS --- WS & SS & NS & LG
+    CE --- BG & DT & BW
+    BG -. Tab URLs + Auth Tokens .-> WS
+    DT -. Network Requests<br>50 Entry Cache .-> NS
+    DT -. Console Logs<br>Size Limited .-> LG
+    DT -. Element Selection .-> BTS
+    CE -. Screenshots<br>Base64 + File .-> SS
+    NS -. Filtered Requests .-> MCP
+    SS -. Storage Path + Data .-> MCP
+    LG -. Truncated Logs .-> MCP
+    NS -- Authenticated Calls --> API(("Target APIs"))
+     SS -- Project Structure --> IMG["Image Storage<br>Downloads/MCP_Screenshots"]
+    BTS -- Status Report --> HC["Health Monitor<br>connection-health"]
+    MCP -.-> PS
+    CE -.-> WB
+    BTS -.-> HM
+    WS -.-> ER
+
+ 
+
+```
+
+#### 1. **MCP Server** (`browser-tools-mcp/`)
+
+- **Role**: Model Context Protocol implementation
+- **Function**: Provides standardized AI tool interface
+- **Key Features**: Enhanced server discovery, retry logic, connection health monitoring
+- **AI Integration**: Compatible with Windsurf, Cursor, Cline, Zed, Claude Desktop
+
+#### 2. **Browser Tools Server** (`browser-tools-server/`)
+
+- **Role**: Central coordination hub
+- **Function**: WebSocket management, data processing, screenshot coordination
+- **Key Features**: Enhanced heartbeat system, individual request tracking, auto-port detection
+- **Network**: HTTP REST API + WebSocket real-time communication
+
+#### 3. **Chrome Extension** (`chrome-extension/`)
+
+- **Role**: Browser integration layer
+- **Function**: Real-time data capture, screenshot execution, DevTools integration
+- **Key Features**: Fast reconnection, exponential backoff, streamlined discovery
+- **UI**: DevTools panel with connection monitoring and manual controls
+
+---
+
+## ðŸ”§ Server Features
+
+- Auto-port detection (starts at 3025, selects 3026â€“3035 as needed)
+- Connection health endpoint at `/connection-health`
+- Heartbeat 25s, timeout 60s; fast reconnection (3â€“15s)
+- Identity endpoint at `/.identity`
+- Individual request tracking and improved callback cleanup
+
+### ðŸ“Š Health Monitoring API
+
+Real-time connection status at `/connection-health`:
+
+```json
+{
+  "connected": true,
+  "healthy": true,
+  "connectionId": "conn_1735814017588_abc123",
+  "heartbeatTimeout": 60000,
+  "heartbeatInterval": 25000,
+  "pendingScreenshots": 0,
+  "uptime": 3600.45
+}
+```
+
+---
+
+## âœ… Prerequisites
+
+- Chrome extension installed and DevTools open on the inspected tab
+- Browser Tools Server running and discoverable (defaults to port 3025)
+- Project configuration in `chrome-extension/projects.json` (see cheat sheet below)
+
+---
+
+## ðŸ§­ Multiâ€‘Project Selection
+
+- Resolution order: request header `X-ACTIVE-PROJECT` â†’ `ACTIVE_PROJECT` env (MCP) â†’ `defaultProject` in `chrome-extension/projects.json`.
+- Each project has its own embedding index at `.vectra/<project>` and API doc source.
+
+---
+
+## ðŸ§° Tools Quick Reference
+
+| Tool | What it does | When to use | Key params | Preconditions |
+| --- | --- | --- | --- | --- |
+| `api.searchEndpoints` | Semantic search over Swagger/OpenAPI. Returns minimal endpoint info (method, path, simple param/request/response hints) and `requiresAuth` from OpenAPI security. | Finding endpoints and basic shapes before coding. | `query?`, `tag?`, `method?`, `limit?` | Embedding index built for the active project; `SWAGGER_URL` configured. |
+| `api.listTags` | Lists all tags with operation counts. | Get a domain overview; seed further API searches. | none | `SWAGGER_URL` configured. |
+| `api.request` | Makes a real HTTP request to `API_BASE_URL`; optionally includes `Authorization: Bearer <token>`. Token source: dynamic via browser storage. | Validate exact responses; verify auth/headers; confirm behavior. | `endpoint`, `method?`, `requestBody?`, `queryParams?`, `includeAuthToken?` | `API_BASE_URL` set; if `includeAuthToken: true` then configure `AUTH_STORAGE_TYPE` + `AUTH_TOKEN_KEY` (and optional `AUTH_ORIGIN`). |
+| `browser.screenshot` | Captures current tab, saves to a structured path, and returns the image. | UI analysis, visual verification, before/after loops. | `randomString` (dummy, required by MCP schema) | Extension connected; DevTools open. |
+| `ui.inspectElement` | Enhanced element context: computed styles, layout relations, issue detection, accessibility hints. | Rapid UI debugging after selecting an element in DevTools. | none | DevTools open and an element selected. |
+| `browser.network.inspect` | Recent network requests with filters (URL substring, fields, time window, sort, limit). | Debug HTTP failures, payloads, and sequences (DevToolsâ€‘like). | `urlFilter`, `details[]`, `timeOffset?`, `orderBy?`, `orderDirection?`, `limit?` | Extension connected; trigger the requests first. |
+| `browser.console.read` | Filtered console messages with stats and formatted output. | Surface JS errors/warnings/logs quickly. | `level?`, `limit?`, `timeOffset?`, `search?` | Extension connected; DevTools open. |
+| `browser.navigate` | Navigates the active tab to a URL. | Multiâ€‘step flows; move to pages before taking screenshots or interacting. | `url` | Extension connected; optional `ROUTES_FILE_PATH` referenced in description. |
+| `interactWithPage` | DOM interactions via semantic selectors (dataâ€‘testid, role+name, label, placeholder, name, text, css, xpath) with intelligent waits and CDP fallback. | Automate clicks/typing/selecting; assert visibility/enabled; optional postâ€‘action screenshot. | `action`, `target`, `scopeTarget?`, `value?`, `options?` | Extension connected; DevTools open recommended. |
+
+Notes:
+- Prefer `browser.network.inspect` for network errors; console tool does not capture HTTP failures.
+- Some MCP clients cache tool descriptions; dynamic updates are not always reflected live.
+
+---
+
+## ðŸ” Common Workflows
+
+- API integration
+  1) `api.searchEndpoints` â†’ 2) `api.request` â†’ 3) implement/types â†’ 4) iterate.
+
+- UI debugging loop
+  1) `browser.screenshot` â†’ 2) select element in DevTools â†’ 3) `ui.inspectElement` â†’ 4) fix â†’ 5) screenshot again.
+
+- Navigation + checks
+  1) `browser.navigate` â†’ 2) `browser.screenshot` â†’ 3) `browser.network.inspect`/`browser.console.read`.
+
+- Automated UI interaction
+  1) `browser.navigate` â†’ 2) `interactWithPage` (perform click/type/etc.) â†’ 3) optional `browser.screenshot` â†’ 4) verify via `browser.network.inspect`.
+
+---
+
+## ðŸ—‚ï¸ Configuration Cheat Sheet (`chrome-extension/projects.json`)
+
+- Perâ€‘project `config`:
+  - `SWAGGER_URL` (required for API search/tag tools)
+  - `API_BASE_URL` (required for live API calls)
+  - `AUTH_STORAGE_TYPE` + `AUTH_TOKEN_KEY` (and optional `AUTH_ORIGIN`) for dynamic auth
+  - `requiresAuth` in search results indicates whether to set includeAuthToken
+  - `ROUTES_FILE_PATH` (optional; referenced in navigation tool description)
+  - Optional: `BROWSER_TOOLS_HOST`, `BROWSER_TOOLS_PORT`
+- Global: `DEFAULT_SCREENSHOT_STORAGE_PATH` (base screenshot directory)
+
+Embedding provider keys (env only, not in projects.json): `OPENAI_API_KEY`, `GEMINI_API_KEY` (+ optional model vars). Reindex from DevTools panel after provider/model changes.
+
+---
+
+## ðŸ§‘â€âš•ï¸ Health & Troubleshooting
+
+- Identity: `GET /.identity` â†’ `{ signature: "mcp-browser-connector-24x7", ... }`
+- Connection health: `GET /connection-health` â†’ heartbeat status, uptime, pending screenshots, etc.
+- Ports: autoâ€‘select in range 3025â€“3035 (first free).
+
+---
+
+## âš ï¸ Constraints & Tips
+
+- Keep DevTools open on the inspected tab for console, network, selected element, and screenshots.
+- Trigger real user actions before inspecting network activity to ensure logs exist.
+- When docs lack detailed schemas, pair `api.searchEndpoints` with `api.request` to get exact shapes.

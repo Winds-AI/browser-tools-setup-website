@@ -1,0 +1,15 @@
+---
+description: Authoring and maintaining the tool documentation markdown files
+---
+
+# Docs Authoring Rules
+
+- Tool docs live in [content/each-tool-explained/](mdc:content/each-tool-explained). Filename must equal the route slug with `.md` extension.
+- Use simple GitHub-flavored Markdown. Avoid heavy client-side markdown libraries in routes; render server-side when possible.
+- Structure per doc:
+  - Title: `# <Tool Name>`
+  - What it does, required inputs, typical outputs
+  - Examples (code fences), gotchas, limits/timeouts
+  - Cross-links to related tools and setup steps
+- Keep headings concise to enable a generated table of contents later.
+- For new tools added in AFBT, create a matching markdown file here and validate `/tools/<slug>` renders properly.

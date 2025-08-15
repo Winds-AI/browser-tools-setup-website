@@ -1,0 +1,17 @@
+---
+alwaysApply: true
+---
+
+# Project Structure (Setup Tutorial Website)
+
+- Next.js App Router (v15) with server components. Main layout: [src/app/layout.tsx](mdc:src/app/layout.tsx). Global styles: [src/app/globals.css](mdc:src/app/globals.css).
+- Home page: [src/app/page.tsx](mdc:src/app/page.tsx). Documentation sections live under `src/app/*/page.tsx` (e.g., [src/app/quickstart/page.tsx](mdc:src/app/quickstart/page.tsx), [src/app/how-to-use/page.tsx](mdc:src/app/how-to-use/page.tsx), [src/app/project-overview/page.tsx](mdc:src/app/project-overview/page.tsx)).
+- Tool docs dynamic route: [src/app/tools/[slug]/page.tsx](mdc:src/app/tools/[slug]/page.tsx)
+  - Uses static generation via `generateStaticParams`
+  - Requires awaiting `params` before accessing properties (Next 15 async params)
+  - Loads markdown content from [content/each-tool-explained/](mdc:content/each-tool-explained)
+- Shared UI components: [src/components/](mdc:src/components)
+- Config: [next.config.ts](mdc:next.config.ts), [tsconfig.json](mdc:tsconfig.json), [eslint.config.mjs](mdc:eslint.config.mjs), [postcss.config.mjs](mdc:postcss.config.mjs)
+- Public assets: [public/](mdc:public)
+
+Content source of truth for tool pages is the markdown file named after the slug, e.g. `content/each-tool-explained/searchApiDocumentation.md` → route `/tools/searchApiDocumentation`.
