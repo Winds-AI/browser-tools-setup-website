@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
+import StepProgressNav from "@/components/StepProgressNav";
+import RightToc from "@/components/RightToc";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -26,9 +29,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${jetbrains.variable} antialiased bg-neutral-950 text-neutral-200`}
+        data-theme="dark"
       >
         <div className="mx-auto flex min-h-[100dvh] max-w-[1280px] gap-6 p-5">
           <Sidebar />
@@ -38,10 +42,14 @@ export default function RootLayout({
             </div>
           </main>
           <aside className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 border-l border-neutral-800 p-4 text-sm text-neutral-400 lg:block">
-            <div className="mb-2 text-xs uppercase tracking-wide">On this page</div>
-            <div>Coming soon</div>
+            <div className="mb-2 text-xs uppercase tracking-wide">
+              On this page
+            </div>
+            <RightToc />
           </aside>
         </div>
+        <StepProgressNav />
+        <ThemeToggle />
       </body>
     </html>
   );

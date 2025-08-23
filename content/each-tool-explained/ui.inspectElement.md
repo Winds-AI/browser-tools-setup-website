@@ -23,29 +23,29 @@ No parameters.
 ## Example Output (abridged)
 
 ```
-ðŸ” Enhanced Element Debugging Context
+🔍 Enhanced Element Debugging Context
 Element: BUTTON#save.primary
 
-ðŸš¨ Critical Issues Detected:
-â€¢ Flex item shrinking; consider min-width or flex-shrink: 0
+🚨 Critical Issues Detected:
+• Flex item shrinking; consider min-width or flex-shrink: 0
 
-ðŸ’¡ Suggested Fixes:
-â€¢ Set align-items on parent or justify-content as needed
+💡 Suggested Fixes:
+• Set align-items on parent or justify-content as needed
 
-ðŸ“ Layout Context:
-â€¢ Parent: DIV (flex) [Flex Container]
-â€¢ This is a flex item
+📐 Layout Context:
+• Parent: DIV (flex) [Flex Container]
+• This is a flex item
 
-ðŸ“„ Full Debug Data Below:
+📄 Full Debug Data Below:
 { ...full JSON payload }
 ```
 
 ## Workflow
 
-1) Take a screenshot with `browser.screenshot({ randomString: "any" })` (optional)
-2) Select the problematic element in DevTools
-3) Run `ui.inspectElement()` and apply fixes based on suggestions
-4) Re-screenshot to verify
+1. Take a screenshot with `browser.screenshot({ randomString: "any" })` (optional)
+2. Select the problematic element in DevTools
+3. Run `ui.inspectElement()` and apply fixes based on suggestions
+4. Re-screenshot to verify
 
 ## Prerequisites
 

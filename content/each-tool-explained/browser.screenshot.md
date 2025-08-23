@@ -15,12 +15,13 @@ The `browser.screenshot` tool captures the current browser tab and saves it as a
 
 ```typescript
 browser.screenshot({
-  randomString: string // any string; required by MCP schema
+  randomString: string, // any string; required by MCP schema
 });
 ```
 
 Parameters:
-- randomString: string (required) â€” arbitrary string to satisfy the MCP schema; not used by the server.
+
+- randomString: string (required) — arbitrary string to satisfy the MCP schema; not used by the server.
 
 ## File Organization System
 
@@ -41,8 +42,8 @@ The tool uses a sophisticated directory structure for organizing screenshots:
 ### URL Category (Subfolder)
 
 - **Localhost URLs**: Uses first path segment
-  - `http://localhost:3000/dashboard` â†’ `dashboard/`
-  - `http://localhost:8080/api/users` â†’ `api/`
+  - `http://localhost:3000/dashboard` → `dashboard/`
+  - `http://localhost:8080/api/users` → `api/`
 - **Staging/Dev**: `staging/{path-segment}/`
 - **Production**: `production/{path-segment}/`
 - **General**: `general/` (for about:blank or unparseable URLs)
@@ -82,7 +83,7 @@ await browser.screenshot({ randomString: "ok" });
 
 Custom filenames are not currently supported via the MCP tool. Filenames are generated from the URL.
 
-Project name is determined by `ACTIVE_PROJECT` or `projects.json` â†’ `defaultProject`.
+Project name is determined by `ACTIVE_PROJECT` or `projects.json` → `defaultProject`.
 
 The tool always returns image data for analysis.
 
@@ -111,21 +112,21 @@ The project folder is determined by `ACTIVE_PROJECT` or `projects.json.defaultPr
 
 ### Component Flow
 
-1. **MCP Server** â†’ Receives tool call and parameters
-2. **Browser Connector Server** â†’ Processes request via WebSocket
-3. **Chrome Extension** â†’ Captures visible tab using `chrome.tabs.captureVisibleTab()`
-4. **Screenshot Service** â†’ Organizes and saves file with intelligent naming
+1. **MCP Server** → Receives tool call and parameters
+2. **Browser Connector Server** → Processes request via WebSocket
+3. **Chrome Extension** → Captures visible tab using `chrome.tabs.captureVisibleTab()`
+4. **Screenshot Service** → Organizes and saves file with intelligent naming
 
 ### WebSocket Communication
 
 ```typescript
-// Browser Connector â†’ Chrome Extension
+// Browser Connector → Chrome Extension
 {
   "type": "take-screenshot",
   "requestId": "1705311045123"
 }
 
-// Chrome Extension â†’ Browser Connector
+// Chrome Extension → Browser Connector
 {
   "type": "screenshot-data",
   "data": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
@@ -223,9 +224,9 @@ await browser.screenshot({ randomString: "after" }); // Compare before/after
 
 ### **What the Enhanced Element Inspection Provides**
 
-When you select an element and call `ui.inspectElement`, you get:
+When you select an element and call `inspectSelectedElementCss`, you get:
 
-**ðŸ” Immediate Issue Detection**:
+**🔍 Immediate Issue Detection**:
 
 - Zero dimensions warnings
 - Overflow clipping issues
@@ -233,21 +234,21 @@ When you select an element and call `ui.inspectElement`, you get:
 - Flex/Grid layout conflicts
 - Material-UI best practices violations
 
-**ðŸ“ Layout Context**:
+**📐 Layout Context**:
 
 - Parent container type (flex/grid/block)
 - Child element relationships
 - Computed style inheritance
 - Positioning context
 
-**â™¿ Accessibility Audit**:
+**♿ Accessibility Audit**:
 
 - ARIA attributes and roles
 - Focus management
 - Semantic structure
 - Keyboard navigation compatibility
 
-**âš¡ Performance Insights**:
+**⚡ Performance Insights**:
 
 - Large image detection
 - Deep nesting warnings
@@ -267,15 +268,15 @@ const debug = await ui.inspectElement();
 
 // AI receives formatted output like:
 /*
-ðŸš¨ Critical Issues Detected:
-â€¢ Flex item might be shrinking too much
+🚨 Critical Issues Detected:
+• Flex item might be shrinking too much
 
-ðŸ’¡ Suggested Fixes:  
-â€¢ Consider setting flex-shrink: 0 or min-width
+💡 Suggested Fixes:  
+• Consider setting flex-shrink: 0 or min-width
 
-ðŸ“ Layout Context:
-â€¢ Parent: DIV (flex) [Flex Container]
-â€¢ This is a flex item
+📐 Layout Context:
+• Parent: DIV (flex) [Flex Container]
+• This is a flex item
 */
 
 // AI can now provide specific fixes without additional tool calls

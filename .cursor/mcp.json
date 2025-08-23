@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "autonomous-frontend-browser-tools": {
+      "command": "npx",
+      "args": ["-y", "@winds-ai/autonomous-frontend-browser-tools"],
+      "env": { "ACTIVE_PROJECT": "afbt-guide-website" }
+    }
+  }
+}

@@ -5,9 +5,15 @@ type Props = {
   code: string;
   language?: string;
   className?: string;
+  title?: string;
 };
 
-export default function CodeBlock({ code, language = "bash", className = "" }: Props) {
+export default function CodeBlock({
+  code,
+  language = "bash",
+  className = "",
+  title,
+}: Props) {
   const [copied, setCopied] = useState(false);
 
   const onCopy = async () => {
@@ -19,9 +25,18 @@ export default function CodeBlock({ code, language = "bash", className = "" }: P
   };
 
   return (
-    <div className={`relative rounded-lg border border-neutral-800 bg-neutral-950 ${className}`}>
+    <div
+      className={`relative rounded-lg border border-neutral-800 bg-neutral-950 ${className}`}
+    >
       <div className="flex items-center justify-between border-b border-neutral-900 px-3 py-2">
-        <span className="text-xs uppercase tracking-wide text-neutral-400">{language}</span>
+        <div className="flex items-center gap-3">
+          <span className="text-xs uppercase tracking-wide text-neutral-400">
+            {language}
+          </span>
+          {title ? (
+            <span className="text-xs text-neutral-500">{title}</span>
+          ) : null}
+        </div>
         <button
           onClick={onCopy}
           className="cursor-pointer rounded-md bg-neutral-800 px-2 py-1 text-xs text-neutral-200 hover:bg-neutral-700"

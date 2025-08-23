@@ -2,21 +2,27 @@
 
 ## Overview
 
-Logs recent browser network requests (similar to DevTools â†’ Network) captured by the Chrome extension. Use it to debug failed requests, verify payloads, and analyze request sequences.
+Logs recent browser network requests (similar to DevTools → Network) captured by the Chrome extension. Use it to debug failed requests, verify payloads, and analyze request sequences.
 
 ## Tool Signature
 
 ```typescript
-browser.network.inspect({
+inspectBrowserNetworkActivity({
   urlFilter: string,
   details: Array<
-    "url" | "method" | "status" | "timestamp" |
-    "requestHeaders" | "responseHeaders" | "requestBody" | "responseBody"
+    | "url"
+    | "method"
+    | "status"
+    | "timestamp"
+    | "requestHeaders"
+    | "responseHeaders"
+    | "requestBody"
+    | "responseBody"
   >,
-  timeOffset?: number, // seconds (e.g., 300 = last 5 minutes)
-  orderBy?: "timestamp" | "url",
-  orderDirection?: "asc" | "desc",
-  limit?: number // default 20
+  timeOffset: number, // seconds (e.g., 300 = last 5 minutes)
+  orderBy: "timestamp" | "url",
+  orderDirection: "asc" | "desc",
+  limit: number, // default 20
 });
 ```
 
@@ -38,13 +44,13 @@ If no matches are found, the tool returns search strategy suggestions (singular/
 
 ```typescript
 // Get last 20 "users" API calls with URL/method/status and timestamp
-await browser.network.inspect({
+await inspectBrowserNetworkActivity({
   urlFilter: "users",
   details: ["url", "method", "status", "timestamp"],
 });
 
 // Inspect payloads for recent failures
-await browser.network.inspect({
+await inspectBrowserNetworkActivity({
   urlFilter: "/api/orders",
   details: ["url", "status", "requestBody", "responseBody"],
   timeOffset: 600, // last 10 minutes

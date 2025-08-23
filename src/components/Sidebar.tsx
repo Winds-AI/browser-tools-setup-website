@@ -1,14 +1,16 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SocialLinks from "./SocialLinks";
 
 const primary = [
   { title: "Setup", href: "/setup" },
-  // { title: "How To Use", href: "/how-to-use" },
-  // { title: "Project Overview", href: "/project-overview" },
-  // { title: "Future Plans", href: "/future-plans" },
+  { title: "Quickstart", href: "/quickstart" },
+  { title: "How To Use", href: "/how-to-use" },
+  { title: "Project Overview", href: "/project-overview" },
+  { title: "Troubleshooting", href: "/troubleshooting" },
+  { title: "Contributing", href: "/contributing" },
 ];
 
 const toolPages = [
@@ -25,14 +27,34 @@ const toolPages = [
 export default function Sidebar() {
   const pathname = usePathname();
   const [toolsOpen, setToolsOpen] = useState(true);
+  const [query, setQuery] = useState("");
+  const filteredPrimary = useMemo(() => {
+    return primary.filter((p) =>
+      p.title.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [query]);
+  const filteredTools = useMemo(() => {
+    return toolPages.filter((t) =>
+      t.title.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [query]);
   return (
     <aside className="sticky top-0 h-[100dvh] w-70 shrink-0 overflow-y-auto overflow-x-hidden border-r border-neutral-800 bg-neutral-950 p-4">
       <div className="w-[calc(100%-1rem)]">
         <div className="mb-3 text-[11px] uppercase tracking-wider text-neutral-400">
           Docs
         </div>
+        <div className="mb-3">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search docs"
+            className="w-full rounded-md border border-neutral-800 bg-neutral-900 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700"
+            aria-label="Search documentation"
+          />
+        </div>
         <nav className="flex flex-col gap-1.5">
-          {primary.map((s) => {
+          {filteredPrimary.map((s) => {
             const active = pathname === s.href;
             return (
               <Link
@@ -63,7 +85,7 @@ export default function Sidebar() {
           </button>
           {toolsOpen && (
             <div className="ml-2 flex flex-col gap-1.5 border-l border-neutral-800 pl-2">
-              {toolPages.map((t) => {
+              {filteredTools.map((t) => {
                 const active = pathname === t.href;
                 return (
                   <Link

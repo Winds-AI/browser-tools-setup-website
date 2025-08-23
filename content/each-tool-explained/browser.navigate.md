@@ -19,6 +19,7 @@ browser.navigate({
   url: string, // The URL to navigate to (required)
 });
 ```
+
 Note: The tool description is augmented at startup to reference your routes file if `ROUTES_FILE_PATH` is set in the environment or project config.
 
 ## Parameters
@@ -42,7 +43,7 @@ Note: The tool description is augmented at startup to reference your routes file
   "content": [
     {
       "type": "text",
-      "text": "âœ… Successfully navigated browser tab to: https://example.com"
+      "text": "✅ Successfully navigated browser tab to: https://example.com"
     }
   ]
 }
@@ -97,37 +98,37 @@ await browser.navigate({
 
 ```typescript
 // Multi-step testing workflow
-await browser.navigate({ url: "https://app.example.com/login" });
+await navigateBrowserTab({ url: "https://app.example.com/login" });
 // Wait for page load, then navigate to dashboard
-await browser.navigate({ url: "https://app.example.com/dashboard" });
+await navigateBrowserTab({ url: "https://app.example.com/dashboard" });
 // Navigate to specific feature
-await browser.navigate({ url: "https://app.example.com/users" });
+await navigateBrowserTab({ url: "https://app.example.com/users" });
 ```
 
 ### 2. Development Workflow
 
 ```typescript
 // Navigate to local development environment
-await browser.navigate({ url: "http://localhost:3000" });
+await navigateBrowserTab({ url: "http://localhost:3000" });
 // Navigate to specific feature being developed
-await browser.navigate({ url: "http://localhost:3000/feature/new-ui" });
+await navigateBrowserTab({ url: "http://localhost:3000/feature/new-ui" });
 ```
 
 ### 3. API Testing
 
 ```typescript
 // Navigate to API documentation
-await browser.navigate({ url: "https://swagger.io/docs/" });
+await navigateBrowserTab({ url: "https://swagger.io/docs/" });
 // Navigate to specific API endpoint
-await browser.navigate({ url: "https://api.example.com/v1/users" });
+await navigateBrowserTab({ url: "https://api.example.com/v1/users" });
 ```
 
 ### 4. Integration Testing
 
 ```typescript
 // Test navigation between different environments
-await browser.navigate({ url: "https://staging.example.com" });
-await browser.navigate({ url: "https://production.example.com" });
+await navigateBrowserTab({ url: "https://staging.example.com" });
+await navigateBrowserTab({ url: "https://production.example.com" });
 ```
 
 ## Error Handling
@@ -176,24 +177,24 @@ try {
 
 ### Component Flow
 
-1. **MCP Server** â†’ Receives tool call and validates URL format
-2. **Browser Connector Server** â†’ Processes request via WebSocket
-3. **Chrome Extension DevTools** â†’ Receives navigation request
-4. **Chrome Extension Background** â†’ Executes `chrome.tabs.update()` API
-5. **Browser** â†’ Performs actual navigation
-6. **Response** â†’ Success/error flows back through the chain
+1. **MCP Server** → Receives tool call and validates URL format
+2. **Browser Connector Server** → Processes request via WebSocket
+3. **Chrome Extension DevTools** → Receives navigation request
+4. **Chrome Extension Background** → Executes `chrome.tabs.update()` API
+5. **Browser** → Performs actual navigation
+6. **Response** → Success/error flows back through the chain
 
 ### WebSocket Communication
 
 ```typescript
-// Browser Connector â†’ Chrome Extension
+// Browser Connector → Chrome Extension
 {
   "type": "navigate-tab",
   "url": "https://example.com",
   "requestId": "1705311045123"
 }
 
-// Chrome Extension â†’ Browser Connector
+// Chrome Extension → Browser Connector
 {
   "type": "navigation-response",
   "requestId": "1705311045123",
@@ -252,11 +253,11 @@ The Chrome extension requires these permissions (already included):
 Always provide complete URLs with protocol:
 
 ```typescript
-// âœ… Good
+// ✅ Good
 await browser.navigate({ url: "https://example.com" });
 
-// âŒ Bad
-await browser.navigate({ url: "example.com" });
+// ❌ Bad
+await navigateBrowserTab({ url: "example.com" });
 ```
 
 ### 2. Error Handling

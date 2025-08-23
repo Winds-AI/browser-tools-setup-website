@@ -8,11 +8,11 @@ Executes a live HTTP request to your API using `API_BASE_URL`. Optionally attach
 
 ```typescript
 api.request({
-  endpoint: string,             // e.g. "/v1/users"
-  method?: "GET"|"POST"|"PUT"|"PATCH"|"DELETE",
-  requestBody?: any,            // JSON-serializable body for non-GET
-  queryParams?: Record<string, string>,
-  includeAuthToken?: boolean    // uses dynamic retrieval when configured
+  endpoint: string, // e.g. "/v1/users"
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  requestBody: any, // JSON-serializable body for non-GET
+  queryParams: Record<string, string>,
+  includeAuthToken: boolean, // uses dynamic retrieval when configured
 });
 ```
 
@@ -20,7 +20,7 @@ api.request({
 
 - `API_BASE_URL`: base URL for your API (e.g., `https://api.example.com`)
 - Set `AUTH_STORAGE_TYPE` (`localStorage|sessionStorage|cookies`) and `AUTH_TOKEN_KEY` (and `AUTH_ORIGIN` for cookies) to enable token retrieval
-- Use `requiresAuth` from `api.searchEndpoints` results to decide whether to set `includeAuthToken`
+- Use `requiresAuth` from `searchApiDocumentation` results to decide whether to set `includeAuthToken`
 
 ## Response
 
@@ -46,9 +46,42 @@ await api.request({
 await api.request({
   endpoint: "/v1/users",
   method: "POST",
-  requestBody: { name: "Jane" }
+  requestBody: { name: "Jane" },
 });
 ```
+
+### Cookies-based auth example
+
+When your token is stored as a cookie:
+
+1. In `projects.json` for the active project, configure:
+
+```json
+{
+  "projects": {
+    "my-frontend": {
+      "config": {
+        "API_BASE_URL": "https://api.example.com",
+        "AUTH_STORAGE_TYPE": "cookies",
+        "AUTH_TOKEN_KEY": "auth_token",
+        "AUTH_ORIGIN": "http://localhost:5173"
+      }
+    }
+  }
+}
+```
+
+2. Call with `includeAuthToken: true`:
+
+```typescript
+await api.request({
+  endpoint: "/auth/profile",
+  method: "GET",
+  includeAuthToken: true,
+});
+```
+
+If the token cannot be retrieved, the tool returns a helpful error. Ensure the target app is open in Chrome, the extension is connected, and DevTools is open on the inspected tab.
 
 ## Tips
 

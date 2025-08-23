@@ -17,12 +17,12 @@
 
 ## Parameters
 
-| Name   | Type   | Required | Description |
-| ------ | ------ | -------- | ----------- |
+| Name   | Type   | Required | Description                                                      |
+| ------ | ------ | -------- | ---------------------------------------------------------------- |
 | query  | string |          | Free-text semantic query (provide either query or tag, not both) |
-| tag    | string |          | Tag to bias retrieval (exclusive with query) |
-| method | string |          | HTTP method filter (GET, POST, PUT, PATCH, DELETE) |
-| limit  | number |          | Maximum number of endpoints to return (default: 10) |
+| tag    | string |          | Tag to bias retrieval (exclusive with query)                     |
+| method | string |          | HTTP method filter (GET, POST, PUT, PATCH, DELETE)               |
+| limit  | number |          | Maximum number of endpoints to return (default: 10)              |
 
 ---
 
@@ -34,7 +34,11 @@
     "method": "GET",
     "path": "/v1/users",
     "request": { "contentType": "application/json", "schemaType": "object" },
-    "response": { "status": "200", "contentType": "application/json", "schemaType": "#/components/schemas/UserList" },
+    "response": {
+      "status": "200",
+      "contentType": "application/json",
+      "schemaType": "#/components/schemas/UserList"
+    },
     "requiresAuth": true
   }
 ]
@@ -44,7 +48,7 @@
 
 ## Notes on types
 
-We provide minimal hints only. For detailed schemas/examples, use your Swagger source directly or pair with `api.request` to observe live responses.
+We provide minimal hints only. For detailed schemas/examples, use your Swagger source directly or pair with `fetchLiveApiResponse` to observe live responses.
 
 ---
 
@@ -82,12 +86,11 @@ Use `api.request` for endpoints where you need exact payload/response shapes bey
 }
 ```
 
-
 ---
 
 ## Error Handling
 
-- **Index missing**: If the semantic index isnâ€™t built, the tool returns an error instructing you to reindex via Dev Panel.
+- **Index missing**: If the semantic index isn’t built, the tool returns an error instructing you to reindex via Dev Panel.
 - **Invalid method**: Validates method filter.
 - **Missing Swagger**: Clear error if SWAGGER_URL not configured.
 
@@ -103,6 +106,6 @@ Use `api.request` for endpoints where you need exact payload/response shapes bey
 
 ## Summary
 
-- __Semantic-only__ API search over your Swagger.
-- __Minimal output__ tailored for quick integration: method, path, request/response hints.
-- __Provider-aware__ backend with batching, backoff, and logs; reindex when changing models.
+- **Semantic-only** API search over your Swagger.
+- **Minimal output** tailored for quick integration: method, path, request/response hints.
+- **Provider-aware** backend with batching, backoff, and logs; reindex when changing models.

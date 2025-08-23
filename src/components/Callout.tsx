@@ -23,18 +23,28 @@ const icons: Record<Variant, string> = {
   danger: "⛔",
 };
 
-export default function Callout({ title, variant = "info", children, className = "" }: Props) {
+export default function Callout({
+  title,
+  variant = "info",
+  children,
+  className = "",
+}: Props) {
   return (
     <div
-      className={`my-3 rounded-md border px-3 py-2 text-sm ${styles[variant]} ${className}`}
-      role="note"
+      className={`my-3 flex items-start gap-3 rounded-md border px-3 py-2 text-sm ${styles[variant]} ${className}`}
+      role={variant === "warning" || variant === "danger" ? "alert" : "note"}
       aria-label={title || variant}
+      aria-live="polite"
     >
-      <div className="mb-1 flex items-center gap-2">
-        <span aria-hidden>{icons[variant]}</span>
-        {title ? <strong className="text-neutral-100">{title}</strong> : null}
+      <div className="mt-0.5 select-none text-base" aria-hidden>
+        {icons[variant]}
       </div>
-      <div className="text-neutral-200">{children}</div>
+      <div className="min-w-0">
+        {title ? (
+          <div className="mb-0.5 font-semibold text-neutral-100">{title}</div>
+        ) : null}
+        <div className="text-neutral-200">{children}</div>
+      </div>
     </div>
   );
 }
