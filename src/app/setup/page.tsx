@@ -15,9 +15,9 @@ export default function SetupPage() {
         </p>
       </header>
       <Callout variant="info" title="Tip: Navigate quickly">
-        Use the step links below or the right-side "On this page" menu to jump
-        around. Each step heading has a small hash link you can copy to share a
-        direct reference.
+        Use the step links below or the right-side &quot;On this page&quot; menu
+        to jump around. Each step heading has a small hash link you can copy to
+        share a direct reference.
       </Callout>
       <nav
         aria-label="On this page"
