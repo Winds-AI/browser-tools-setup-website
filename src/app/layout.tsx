@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
@@ -50,6 +51,7 @@ export default function RootLayout({
         </div>
         <StepProgressNav />
         <ThemeToggle />
+        <SpeedInsights />
       </body>
     </html>
   );
